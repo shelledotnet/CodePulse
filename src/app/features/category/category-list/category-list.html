@@ -1,0 +1,45 @@
+<div class="container">
+    <h1 class="mt-3">Category List</h1>
+    <div class="d-flex justify-content-end mt-3">
+        <a [routerLink]="['/admin','categories','add']" class="btn btn-primary">Add Category</a>
+    </div>
+    <div>
+        @if(isLoading()){
+        <p class="text-info">Loading...</p>
+        }
+        @else{
+        @if(isError()){
+        <p class="text-danger">{{ isError()?.message }}</p>
+        }
+        @else {
+        <table class="table table-bordered mt-3 table-hover">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>URL Handle</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (category of value(); track category.id) {
+                <tr>
+                    <td>{{ category.id }}</td>
+                    <td>{{ category.name }}</td>
+                    <td>{{ category.urlHandle }}</td>
+                    <td>
+                        <a class="btn btn-light" [routerLink]="['/admin','categories','edit',category.id]">Edit</a>
+                        <!-- ensure the landing componet can recieve route parametr by adding  provideRouter(routes,withComponentInputBinding()), 
+                        in app.config.ts
+                        then in the edit component use input signal to receive the id parameter, 
+                        then use that id to fetch the category details and fill the form with it -->
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+
+        }
+        }
+    </div>
+</div>
