@@ -10,11 +10,27 @@
             <input type="text" class="form-control" formControlName="shortDescription">
         </div>
         <div class="mb-3">
-            <label class="form-label">Content</label>
-            <textarea class="form-control" formControlName="content" rows="5"></textarea>
+
+            <div class="d-flex flex-row">
+                <div class="col-6 p-2">
+                    <label class="form-label">Content</label>
+                    <textarea class="form-control" formControlName="content" rows="5"></textarea>
+                </div>
+                <div class="col-6 p-2" style="max-height: 350px; overflow-y: scroll;">
+                    <markdown [data]="addBlogpostForm.controls.content.getRawValue()"></markdown>
+                </div>
+            </div>
+
         </div>
         <div class="mb-3">
             <label class="form-label">Featured Image URL</label>
+
+            @if(addBlogpostForm.controls.featuredImageUrl.getRawValue()){
+            <div class="mb-3">
+                <img style="width: 100px;" [src]="addBlogpostForm.controls.featuredImageUrl.getRawValue()"
+                    alt="Featured Image" class="my-2">
+            </div>
+            }
             <input type="text" class="form-control" formControlName="featuredImageUrl">
         </div>
         <div class="mb-3">

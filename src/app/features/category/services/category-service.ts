@@ -1,4 +1,4 @@
-import { HttpClient, httpResource } from '@angular/common/http';
+import { HttpClient, httpResource, HttpResourceRef } from '@angular/common/http';
 import { inject, Injectable, InputSignal, signal } from '@angular/core';
 import { IAddCategoryRequest, IGetAllCategoryResponse, IUpdateCategoryRequest } from '../models/category.model';
 import { environment } from '../../../../environments/environment';
@@ -55,7 +55,7 @@ export class CategoryService {
     })
   }
 
-  getAllCategories() { //this httpResource is only for GET requests and has signal inclusive WITH THE RESPONSE TYPE
+  getAllCategories(): HttpResourceRef<IGetAllCategoryResponse[] | undefined> { //this httpResource is only for GET requests and has signal inclusive WITH THE RESPONSE TYPE
     return httpResource<IGetAllCategoryResponse[]>(() => `${this.baseUrl}/api/Categories/get-all-category`);
   }
 

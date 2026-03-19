@@ -1,13 +1,21 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { BlogPostService } from '../services/blog-post-service';
+import { AddBlogPost } from '../models/blogpost.model';
+import { Router } from '@angular/router';
+import { MarkdownComponent } from 'ngx-markdown';
 
 @Component({
   selector: 'app-add-blogpost',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule,MarkdownComponent],
   templateUrl: './add-blogpost.html',
   styleUrl: './add-blogpost.css',
 })
 export class AddBlogpost {
+  private blogPostService = inject(BlogPostService);
+  private route = inject(Router);
+
+
   addBlogpostForm = new FormGroup({  //this reactive form will be used to capture the input from the user when adding a new blog post. It includes form controls for title, short description, content, featured image URL, URL handle, and author, each with appropriate validators to ensure that the input meets certain criteria (e.g., required fields, minimum and maximum lengths, and specific patterns).
     title: new FormControl<string>('Iranian War', {
       nonNullable: true,
@@ -45,7 +53,26 @@ export class AddBlogpost {
 
   OnSubmit() {
     const formValue = this.addBlogpostForm.getRawValue();
-    console.info(formValue);
+    const addBlogPostRequest: AddBlogPost = {
+      title: formValue.title,
+      shortDescription: formValue.shortDescription,
+      content: formValue.content,
+      featuredImageUrl: formValue.featuredImageUrl,
+      urlHandle: formValue.urlHandle,
+      author: formValue.author,
+      publishedDate: new Date(formValue.PublishedDate),
+      isVisible: formValue.isVisible
+    };
+    this.blogPostService.createBlogPost(addBlogPostRequest).subscribe({
+      next: (response) => {
+        console.info('Blog post created successfully:', response);
+        this.route.navigate(['/admin/blogposts']);
+      },
+      error: (error) => {
+        console.error('Error creating blog post:', error);
+      }
+    });
+
 
   }
 }

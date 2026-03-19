@@ -20,8 +20,8 @@ export interface BlogPost {
     publishedDate: Date;
     author: string;
     isVisible: boolean;
-    CreatedAt: Date;
-    UpdatedAt: Date;
+    createdAt: Date;
+    updatedAt: Date;
 
 
 }
