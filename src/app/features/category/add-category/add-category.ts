@@ -1,6 +1,6 @@
 import { Component, effect, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { IAddCategoryRequest } from '../models/category.model';
+import { CategoryRequest } from '../models/category.model';
 import { CategoryService } from '../services/category-service';
 import { Router } from '@angular/router';
 
@@ -15,7 +15,7 @@ export class AddCategory {
   private route = inject(Router);
   constructor() {
     //i will use effect signal to loop through the signal details, ensure effect() is always inside a constructor
-  //why do we always have effect signal inside constructor? because we want to ensure that the effect is created when the component is created, and also because we want to avoid creating multiple effects when the component is re-rendered, because if we put the effect outside the constructor it will be created every time the component is re-rendered, and this will cause performance issues and memory leaks, but when we put the effect inside the constructor it will be created only once when the component is created, and it will be automatically destroyed when the component is destroyed, so this is a good practice to ensure that we dont create multiple effects and we dont have memory leaks in our application. 
+    //why do we always have effect signal inside constructor? because we want to ensure that the effect is created when the component is created, and also because we want to avoid creating multiple effects when the component is re-rendered, because if we put the effect outside the constructor it will be created every time the component is re-rendered, and this will cause performance issues and memory leaks, but when we put the effect inside the constructor it will be created only once when the component is created, and it will be automatically destroyed when the component is destroyed, so this is a good practice to ensure that we dont create multiple effects and we dont have memory leaks in our application. 
     effect(() => {
       if (this.categoryService.addCategoryStatusSignal() === 'success') {
         console.info('success');
@@ -54,7 +54,7 @@ export class AddCategory {
 
   OnSubmit() {
     const addCategoryFormGroupValue = this.addCategoryFormGroup.getRawValue();
-    const addCategoryRequestDto: IAddCategoryRequest = {
+    const addCategoryRequestDto: CategoryRequest = {
       name: addCategoryFormGroupValue.name,
       urlHandle: addCategoryFormGroupValue.urlHandle
     }

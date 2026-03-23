@@ -1,7 +1,7 @@
 import { Component, effect, inject, input } from '@angular/core';
 import { CategoryService } from '../services/category-service';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { IUpdateCategoryRequest } from '../models/category.model';
+import { UpdateCategoryRequest } from '../models/category.model';
 import { Router } from '@angular/router';
 
 @Component({
@@ -45,7 +45,7 @@ export class EditCategory {
   // 1) import reactiveformsmodule.
   // 2) formgroup --> formcontrols
   editCategoryFormGroup = new FormGroup({
-//'' is the default value of the 2 form controls name and urlhandle, nonNullable is set to true to ensure that the form control value is never null, and we have added validators to the form controls to ensure that the name and urlHandle are required and have a maximum length of 30 characters.
+    //'' is the default value of the 2 form controls name and urlhandle, nonNullable is set to true to ensure that the form control value is never null, and we have added validators to the form controls to ensure that the name and urlHandle are required and have a maximum length of 30 characters.
     name: new FormControl<string>('', {
       nonNullable: true,
       validators: [Validators.required, Validators.maxLength(30)]
@@ -88,7 +88,7 @@ export class EditCategory {
     }
 
     const editCategoryFormGroupValue = this.editCategoryFormGroup.getRawValue();
-    const updateRequestDto: IUpdateCategoryRequest = {
+    const updateRequestDto: UpdateCategoryRequest = {
       name: editCategoryFormGroupValue.name,
       urlHandle: editCategoryFormGroupValue.urlHandle
     }

@@ -24,10 +24,9 @@
                 <tr>
                     <th>Title</th>
                     <th>Short Description</th>
-
                     <th>Is Visible</th>
-
-                    <th></th>
+                    <th>Category</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -38,9 +37,15 @@
                     <td>{{ blogPost.shortDescription }}</td>
 
                     <td>{{ blogPost.isVisible }}</td>
+                    <td>
+                        @for (category of blogPost.categories; track category.id) {
+                        <span class="badge text-bg-secondary me-1">{{ category.name }}</span>
+                        }
+                    </td>
+
 
                     <td>
-                        <a class="btn btn-light" [routerLink]="['/admin','blogposts','edit',blogPost.id]">Edit</a>
+                        <a class="btn btn-light" [routerLink]="['/admin','blogposts',blogPost.id]">Edit</a>
                         <!-- ensure the landing componet can recieve route parametr by adding  provideRouter(routes,withComponentInputBinding()), 
                         in app.config.ts
                         then in the edit component use input signal to receive the id parameter, 

@@ -1,6 +1,6 @@
 import { HttpClient, httpResource, HttpResourceRef } from '@angular/common/http';
 import { inject, Injectable, InputSignal, signal } from '@angular/core';
-import { IAddCategoryRequest, IGetAllCategoryResponse, IUpdateCategoryRequest } from '../models/category.model';
+import { CategoryRequest, CategoryResponse, UpdateCategoryRequest } from '../models/category.model';
 import { environment } from '../../../../environments/environment';
 import { Observable } from 'rxjs';
 
@@ -24,7 +24,7 @@ export class CategoryService {
   addCategoryStatusSignal = signal<'idle' | 'loading' | 'success' | 'error'>('idle');
   updateCategoryStatusSignal = signal<'idle' | 'loading' | 'success' | 'error'>('idle');
 
-  addCategory(category: IAddCategoryRequest) {  //this is observable because we are not subscribing to the http call in the service, we will subscribe to it in the component, and we will perform action based on the response of the observable in the component
+  addCategory(category: CategoryRequest) {  //this is observable because we are not subscribing to the http call in the service, we will subscribe to it in the component, and we will perform action based on the response of the observable in the component
     this.addCategoryStatusSignal.set('loading');
     this.http.post<void>(`${this.baseUrl}/api/Categories`, category).subscribe({//this is RXJS subscription, it has next and error callback, next callback will be called when the http call is successful and error callback will be called when the http call fails
       next: (response) => {
@@ -41,7 +41,7 @@ export class CategoryService {
   //here u dont need to return observale because you have actually subcribed to the http call and you are using 
   // signal to know the status of the request, so you can perform action based on the value of the signal 
   // in the component without having to subscribe to an observable in the component
-  updateCategory(id: string, editcategory: IUpdateCategoryRequest) {
+  updateCategory(id: string, editcategory: UpdateCategoryRequest) {
     this.updateCategoryStatusSignal.set('loading');
     this.http.put<void>(`${this.baseUrl}/api/Categories/${id}`, editcategory).subscribe({
       next: (response) => {
@@ -55,12 +55,14 @@ export class CategoryService {
     })
   }
 
-  getAllCategories(): HttpResourceRef<IGetAllCategoryResponse[] | undefined> { //this httpResource is only for GET requests and has signal inclusive WITH THE RESPONSE TYPE
-    return httpResource<IGetAllCategoryResponse[]>(() => `${this.baseUrl}/api/Categories/get-all-category`);
+  getAllCategories():
+    HttpResourceRef<CategoryResponse[] | undefined> { //this httpResource is only for GET requests and has signal inclusive WITH THE RESPONSE TYPE
+    return httpResource<CategoryResponse[]>(() => `${this.baseUrl}/api/Categories`);
   }
 
-  getCategoryById(id: InputSignal<string | undefined>) { //this httpResource is only for GET requests has signal inclusive WITH THE RESPONSE TYPE
-    return httpResource<IGetAllCategoryResponse>(() => `${this.baseUrl}/api/Categories/${id()}`);
+  getCategoryById(id: InputSignal<string | undefined>):
+    HttpResourceRef<CategoryResponse | undefined> { //this httpResource is only for GET requests has signal inclusive WITH THE RESPONSE TYPE
+    return httpResource<CategoryResponse>(() => `${this.baseUrl}/api/Categories/${id()}`);
   }
 
   //here we have to return observable because we are not subscribing to the http call in the service, 
