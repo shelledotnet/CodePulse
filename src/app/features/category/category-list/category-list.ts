@@ -10,8 +10,8 @@ import { CategoryService } from '../services/category-service';
 })
 export class CategoryList {
   private categoryService = inject(CategoryService);
-
   private getAllCategoryByRef = this.categoryService.getAllCategories();
+  //above are private properties only accessible within the CategoryList class. not in the html file.
   isLoading = this.getAllCategoryByRef.isLoading;
   isError = this.getAllCategoryByRef.error;
   value = this.getAllCategoryByRef.value;

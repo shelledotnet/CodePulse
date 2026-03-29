@@ -8,32 +8,32 @@ import { EditBlogpost } from './features/blogPost/edit-blogpost/edit-blogpost';
 
 export const routes: Routes = [
   {
-    path:"admin/categories",
-    component:CategoryList
-    
+    path: "admin/categories",
+    component: CategoryList
+
   },
   {
-    path:"admin/categories/add",
-    component:AddCategory
+    path: "admin/categories/add",
+    component: AddCategory
   }
   ,
   {
-    path:"admin/categories/:id",
-    component:EditCategory
-  }
-   ,
-  {
-    path:"admin/blogposts",
-    component:BlogpotstList
+    path: "admin/categories/edit/:id",
+    component: EditCategory
   }
   ,
   {
-    path:"admin/blogposts/add",
-    component:AddBlogpost
+    path: "admin/blogposts",
+    component: BlogpotstList
   }
   ,
   {
-    path:"admin/blogposts/:id",
-    component:EditBlogpost
+    path: "admin/blogposts/add",
+    component: AddBlogpost
+  }
+  ,
+  {
+    path: "admin/blogposts/edit/:id",
+    component: EditBlogpost
   }
 ];

@@ -28,7 +28,7 @@
                     <td>{{ category.name }}</td>
                     <td>{{ category.urlHandle }}</td>
                     <td>
-                        <a class="btn btn-light" [routerLink]="['/admin','categories',category.id]">Edit</a>
+                        <a class="btn btn-light" [routerLink]="['/admin','categories','edit',category.id]">Edit</a>
                         <!-- ensure the landing componet can recieve route parametr by adding  provideRouter(routes,withComponentInputBinding()), 
                         in app.config.ts
                         then in the edit component use input signal to receive the id parameter, 

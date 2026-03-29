@@ -1,0 +1,33 @@
+@if(showImageSelector()){
+<div class="image-selector-container">
+    <button type="button" class="btn btn-light" style="position: fixed;top:10px;right: 10px;" (click)="hideImageSelector()">X</button>
+    <div class="card h-100">
+        <div class="card-header">
+            <h3 class="card-title">Images
+
+            </h3>
+        </div>
+        <div class="card-body">
+            <div class="d-flex flex-md-row flex-sm-column flex-wrap">
+                <div class="col-8 p-4">
+
+                </div>
+                <div class="col-4 p-4 bg-light">
+                    <h5>Upload Image</h5>
+                    <form>
+                        <div class="mt-3">
+                            <input type="file" class="form-control">
+                        </div>
+                        <div class="mt-3">
+                            <input type="text" class="form-control" placeholder="file name">
+                        </div>
+                        <div class="mt-3">
+                            <button class="btn btn-dark">Upload</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+}

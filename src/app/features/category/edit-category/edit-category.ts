@@ -34,6 +34,7 @@ export class EditCategory {
   private categoryService = inject(CategoryService);
   private route = inject(Router);
   private getCategoryByIdRef = this.categoryService.getCategoryById(this.id);//we are passing the id input signal to the getCategoryById method here with out paranthesis but when calling signal we inclue the parathesis in the service to fetch the category details based on the id, and we are using the returned signal to get the category details and patch the form values with the category details, and also to know the loading and error state of the request to fetch category details based on id
+  //above are private properties only accessible within the EditCategory class. not in the html file.
   isLoading = this.getCategoryByIdRef.isLoading;
   isError = this.getCategoryByIdRef.error;
   categoryResponse = this.getCategoryByIdRef.value;
@@ -70,13 +71,14 @@ export class EditCategory {
   //In this case, the effect is used to patch the form values with the category details whenever the categoryResponse signal changes (i.e., when the category details are fetched from the server).
   //so here u dont need to put the effect in a constructor because we are not checking for the status of any request, we are just patching the form values with the category details whenever the categoryResponse signal changes, and this will ensure that the form values are updated with the fetched category details as soon as they are available, without having to manually trigger any function to update the form values after fetching the category details based on id.
   effectRef = effect(() => {
-    this.editCategoryFormGroup.patchValue({ //patchValue enable us to update the values of the form controls in the editCategoryFormGroup with the values from the categoryResponse signal, and we are using optional chaining to ensure that we dont get an error when the categoryResponse signal is undefined or null, because when the component is first loaded the categoryResponse signal will be undefined until the http call to fetch category details based on id is completed and the value of the categoryResponse signal is updated with the fetched category details.
-      //id is not included in the patchValue because we are not allowing the user to edit the id of the category, and also because the id is not part of the form controls in the editCategoryFormGroup, and we are using the id from the input signal to make the update category request in the updateCategory method when the form is submitted.
-      // id: this.categoryResponse()?.id,
-      name: this.categoryResponse()?.name,
-      urlHandle: this.categoryResponse()?.urlHandle
-    });
-
+    if (this.categoryResponse()) {
+      this.editCategoryFormGroup.patchValue({ //patchValue enable us to update the values of the form controls in the editCategoryFormGroup with the values from the categoryResponse signal, and we are using optional chaining to ensure that we dont get an error when the categoryResponse signal is undefined or null, because when the component is first loaded the categoryResponse signal will be undefined until the http call to fetch category details based on id is completed and the value of the categoryResponse signal is updated with the fetched category details.
+        //id is not included in the patchValue because we are not allowing the user to edit the id of the category, and also because the id is not part of the form controls in the editCategoryFormGroup, and we are using the id from the input signal to make the update category request in the updateCategory method when the form is submitted.
+        // id: this.categoryResponse()?.id,
+        name: this.categoryResponse()?.name,
+        urlHandle: this.categoryResponse()?.urlHandle
+      });
+    }
   });
 
   OnSubmit() {
