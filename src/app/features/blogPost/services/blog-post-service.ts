@@ -31,6 +31,13 @@ export class BlogPostService {
   }
 
 
+  getBlogPostByUrlHandle(urlHandle: InputSignal<string | undefined>):
+    HttpResourceRef<BlogPost | undefined> { //this httpResource is only for GET requests has signal inclusive WITH THE RESPONSE TYPE
+    return httpResource<BlogPost>(() => `${this.baseUrl}/api/BlogPost/${urlHandle()}`);
+  }
+
+
+
   //this will return an observable of type BlogPost because we are not subscribing to the http call in the service, we will subscribe to it in the component, and we will perform action based on the response of the observable in the component
   updateBlogPost(id: string, editBlogPost: UpdateBlogPostRequest): Observable<BlogPost> {
     return this.http.put<BlogPost>(`${this.baseUrl}/api/BlogPost/${id}`, editBlogPost);

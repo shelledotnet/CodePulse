@@ -10,7 +10,7 @@ import { ImageSelectorService } from '../../../shared/services/image-selector-se
 
 @Component({
   selector: 'app-edit-blogpost',
-  imports: [ReactiveFormsModule, MarkdownComponent, ImageSelector],
+  imports: [ReactiveFormsModule, MarkdownComponent],
   templateUrl: './edit-blogpost.html',
   styleUrl: './edit-blogpost.css',
 })
@@ -41,7 +41,7 @@ export class EditBlogpost {
     }),
     shortDescription: new FormControl<string>('', {
       nonNullable: true,
-      validators: [Validators.required, Validators.minLength(5), Validators.maxLength(250)]
+      validators: [Validators.required, Validators.minLength(5), Validators.maxLength(500)]
     }),
     content: new FormControl<string>('', {
       nonNullable: true,
@@ -136,6 +136,18 @@ export class EditBlogpost {
       });
     }
   });
+  //we always reacto to change of signal using effect() in the component and not in the service, because the service should be responsible for managing the state and logic related to the data, and the component should be responsible for reacting to the changes in the state and updating the UI accordingly, so we should use effect() in the component to react to the changes in the signals that hold the data and update the form values or perform any other action based on the changes in the signals, and we should not use effect() in the service to react to the changes in the signals because it can lead to unexpected behavior and make it harder to manage the state and logic related to the data in a clear and predictable way.
+  //i want to response to chenge of the signal that holds the selected image url in the image selector service 
+  // and update the featuredImageUrl form control value with the selected image url whenever it changes, 
+  // so that when the user selects an image from the image selector modal the featuredImageUrl form control value 
+  // will be updated with the selected image url and we can use that url to update the blog post details when the form is submitted.
+  selectedImageEffectRef = effect(() => {
+    const selectedImageUrl = this.imageSelectorService.selectedImage();
+    if (selectedImageUrl) {
+      this.editBlogPostForm.patchValue({ featuredImageUrl: selectedImageUrl });
+    }
+  });
+
 
   OnSubmit() {
     const id = this.id();

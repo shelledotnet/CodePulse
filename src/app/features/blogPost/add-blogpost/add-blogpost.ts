@@ -1,10 +1,12 @@
-import { Component, inject } from '@angular/core';
+import { Component, effect, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { BlogPostService } from '../services/blog-post-service';
 import { AddBlogPost } from '../models/blogpost.model';
 import { Router } from '@angular/router';
 import { MarkdownComponent } from 'ngx-markdown';
 import { CategoryService } from '../../category/services/category-service';
+import { ImageSelectorService } from '../../../shared/services/image-selector-service';
+import { ImageSelector } from "../../../shared/components/image-selector/image-selector";
 
 @Component({
   selector: 'app-add-blogpost',
@@ -16,6 +18,8 @@ export class AddBlogpost {
   private blogPostService = inject(BlogPostService);
   private categoryService = inject(CategoryService);
   private route = inject(Router);
+  imageSelectorService = inject(ImageSelectorService);
+
   private categoriesResourceRef = this.categoryService.getAllCategories();
   //all above are private properties only accessible within the AddBlogpost class. not in the html file. 
   // The blogPostService is used to interact with the backend service for creating blog posts, while the categoryService is used to fetch categories. The route property is used for navigation after successfully creating a blog post. The categoriesResourceRef is a reference to the resource that contains all categories, which can be used to populate a dropdown or selection list in the form.
@@ -24,6 +28,18 @@ export class AddBlogpost {
   isError = this.categoriesResourceRef.error;
   categoriesResponse = this.categoriesResourceRef.value;
   statusCode = this.categoriesResourceRef.statusCode;
+
+  //we always reacto to change of signal using effect() in the component and not in the service, because the service should be responsible for managing the state and logic related to the data, and the component should be responsible for reacting to the changes in the state and updating the UI accordingly, so we should use effect() in the component to react to the changes in the signals that hold the data and update the form values or perform any other action based on the changes in the signals, and we should not use effect() in the service to react to the changes in the signals because it can lead to unexpected behavior and make it harder to manage the state and logic related to the data in a clear and predictable way.
+  //i want to response to chenge of the signal that holds the selected image url in the image selector service 
+  // and update the featuredImageUrl form control value with the selected image url whenever it changes, 
+  // so that when the user selects an image from the image selector modal the featuredImageUrl form control value 
+  // will be updated with the selected image url and we can use that url to update the blog post details when the form is submitted.
+  selectedImageEffectRef = effect(() => {
+    const selectedImageUrl = this.imageSelectorService.selectedImage();
+    if (selectedImageUrl) {
+      this.addBlogpostForm.patchValue({ featuredImageUrl: selectedImageUrl });
+    }
+  });
 
   addBlogpostForm = new FormGroup({  //this reactive form will be used to capture the input from the user when adding a new blog post. It includes form controls for title, short description, content, featured image URL, URL handle, and author, each with appropriate validators to ensure that the input meets certain criteria (e.g., required fields, minimum and maximum lengths, and specific patterns).
     title: new FormControl<string>('Iranian War', {
@@ -87,4 +103,6 @@ export class AddBlogpost {
 
 
   }
+
+
 }
