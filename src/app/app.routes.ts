@@ -7,11 +7,17 @@ import { AddBlogpost } from './features/blogPost/add-blogpost/add-blogpost';
 import { EditBlogpost } from './features/blogPost/edit-blogpost/edit-blogpost';
 import { Home } from './features/public/home/home';
 import { BlogDetails } from './features/public/blog-details/blog-details';
+import { Login } from './features/auth/login/login';
 
 export const routes: Routes = [
   {
     path: "",
     component: Home
+
+  },
+  {
+    path: "login",
+    component: Login
 
   },
   {
