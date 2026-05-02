@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../services/auth-service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -10,8 +11,8 @@ import { AuthService } from '../services/auth-service';
 })
 export class Login {
   authService = inject(AuthService);
+  router = inject(Router);
 
-  
   loginFormGroup = new FormGroup({
     email: new FormControl<string>('', {
       nonNullable: true,
@@ -23,7 +24,7 @@ export class Login {
     })
   })
 
- get emailformControl(): FormControl<string> {
+  get emailformControl(): FormControl<string> {
     return this.loginFormGroup.controls.email;
   }
 
@@ -36,7 +37,8 @@ export class Login {
     if (this.loginFormGroup.valid) {
       this.authService.login(formRawValue.email, formRawValue.password).subscribe({
         next: (response) => {
-          console.log('Login successful:', response);
+          // console.log('Login successful:', response);
+          this.router.navigate(['']);
         },
         error: (error) => {
           console.error('Login failed:', error);
