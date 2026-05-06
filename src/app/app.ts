@@ -24,8 +24,8 @@ export class App {
   effectRef = effect(() => {
     const userValue = this.user();
     if (userValue) {
-      this.authService.user.set(userValue);
+      this.authService.setUser(userValue);
     }
   })
-  
+
 }

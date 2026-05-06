@@ -18,7 +18,9 @@ export class BlogPostService {
 
   //this will return an observable of type BlogPost because we are not subscribing to the http call in the service, we will subscribe to it in the component, and we will perform action based on the response of the observable in the component
   createBlogPost(data: AddBlogPost): Observable<BlogPost> {
-    return this.http.post<BlogPost>(`${this.baseUrl}/api/blogpost`, data);
+    return this.http.post<BlogPost>(`${this.baseUrl}/api/blogpost`, data, {
+      withCredentials: true
+    });
   }
 
   getAllBlogPosts(): HttpResourceRef<BlogPost[] | undefined> { //this httpResource is only for GET requests and has signal inclusive WITH THE RESPONSE TYPE
@@ -40,13 +42,17 @@ export class BlogPostService {
 
   //this will return an observable of type BlogPost because we are not subscribing to the http call in the service, we will subscribe to it in the component, and we will perform action based on the response of the observable in the component
   updateBlogPost(id: string, editBlogPost: UpdateBlogPostRequest): Observable<BlogPost> {
-    return this.http.put<BlogPost>(`${this.baseUrl}/api/BlogPost/${id}`, editBlogPost);
+    return this.http.put<BlogPost>(`${this.baseUrl}/api/BlogPost/${id}`, editBlogPost, {
+      withCredentials: true
+    });
   }
 
   //here we have to return observable because we are not subscribing to the http call in the service, 
   // we will subscribe to it in the component, and we will perform action based on the response of 
   // the observable in the component
   deleteBlogPostById(id: string): Observable<BlogPost> {
-    return this.http.delete<BlogPost>(`${this.baseUrl}/api/BlogPost/${id}`);
+    return this.http.delete<BlogPost>(`${this.baseUrl}/api/BlogPost/${id}`, {
+      withCredentials: true
+    });
   }
 }

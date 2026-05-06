@@ -10,6 +10,7 @@
                 <li class="nav-item">
                     <a class="nav-link active" aria-current="page" href="#">Home</a>
                 </li>
+                @if(authService.user()?.roles?.includes('writer')){
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
                         data-bs-toggle="dropdown" aria-expanded="false">
@@ -20,6 +21,7 @@
                         <li><a class="dropdown-item" [routerLink]="['admin','blogposts']">BlogPosts</a></li>
                     </ul>
                 </li>
+                }
             </ul>
             <div class="d-flex gap-4 align-items-center">
                 @if(authService.user()){

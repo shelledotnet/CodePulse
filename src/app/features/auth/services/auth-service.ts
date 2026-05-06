@@ -26,10 +26,11 @@ export class AuthService {
       withCredentials: true  //why do we have to set withCredentials to true? because we are using cookies 
       // for authentication, and by default, the browser does not send cookies in cross-origin requests, so we have to set withCredentials to true to tell the browser to include cookies in the request, and also the server has to set the Access-Control-Allow-Credentials header to true to allow the browser to send cookies in cross-origin requests
     }).pipe(
-      // here we are using tap operator to perform side effect of setting the user signal with the response of the login api call, so that we can use the user signal in other parts of the application to check if the user is logged in or not, and to get the user details like email and roles
+      // here we are using tap operator to perform side effect of setting the user signal with the response of the
+      //  login api call, so that we can use the user signal in other parts of the application to check if the user is logged in or not, and to get the user details like email and roles
       tap((response) => {
         if (response.isSucceeded) {
-          this.user.set({
+          this.setUser({
             email: response.email,
             roles: response.roles
           });
@@ -56,7 +57,7 @@ export class AuthService {
       withCredentials: true
     }).subscribe({
       next: () => {
-        this.user.set(null);
+        this.setUser(null);
         this.router.navigate([""]);
       },
       error: (err) => {
@@ -64,5 +65,12 @@ export class AuthService {
       }
     }
     );
+  }
+
+  setUser(updateUser: LoadUser | null) {
+    this.user.set({
+      email: updateUser?.email || '',
+      roles: updateUser?.roles?.map(role => role.toLowerCase()) || []
+    });
   }
 }
