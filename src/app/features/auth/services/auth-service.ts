@@ -58,6 +58,7 @@ export class AuthService {
     }).subscribe({
       next: () => {
         this.setUser(null);
+        // console.log("user looged out")
         this.router.navigate([""]);
       },
       error: (err) => {

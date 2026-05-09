@@ -118,7 +118,7 @@ export class EditCategory {
     // the service to know the status of the delete request.
     this.categoryService.deleteCategoryById(id).subscribe({
       next: (response) => {
-        console.info(`category deleted successfully ${response}`);
+        console.log(response);
         this.route.navigate(['/admin/categories']);
         //eventually redirect to category list page
       },

@@ -8,6 +8,7 @@ import { EditBlogpost } from './features/blogPost/edit-blogpost/edit-blogpost';
 import { Home } from './features/public/home/home';
 import { BlogDetails } from './features/public/blog-details/blog-details';
 import { Login } from './features/auth/login/login';
+import { adminGuard } from './features/auth/guards/admin-guard';
 
 export const routes: Routes = [
   {
@@ -27,31 +28,37 @@ export const routes: Routes = [
   },
   {
     path: "admin/categories",
-    component: CategoryList
+    component: CategoryList,
+    canActivate: [adminGuard]
 
   },
   {
     path: "admin/categories/add",
-    component: AddCategory
+    component: AddCategory,
+    canActivate: [adminGuard]
   }
   ,
   {
     path: "admin/categories/edit/:id",
-    component: EditCategory
+    component: EditCategory,
+    canActivate: [adminGuard]
   }
   ,
   {
     path: "admin/blogposts",
-    component: BlogpotstList
+    component: BlogpotstList,
+    canActivate: [adminGuard]
   }
   ,
   {
     path: "admin/blogposts/add",
-    component: AddBlogpost
+    component: AddBlogpost,
+    canActivate: [adminGuard]
   }
   ,
   {
     path: "admin/blogposts/edit/:id",
-    component: EditBlogpost
+    component: EditBlogpost,
+    canActivate: [adminGuard]
   }
 ];
