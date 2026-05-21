@@ -1,5 +1,5 @@
-import { HttpClient, httpResource, HttpResourceRef } from '@angular/common/http';
-import { inject, Injectable, InputSignal, signal } from '@angular/core';
+import { HttpClient, HttpParams, httpResource, HttpResourceRef } from '@angular/common/http';
+import { inject, Injectable, InputSignal, Signal, signal } from '@angular/core';
 import { CategoryRequest, CategoryResponse, DeleteCategoryResponse, UpdateCategoryRequest } from '../models/category.model';
 import { environment } from '../../../../environments/environment';
 import { Observable } from 'rxjs';
@@ -59,14 +59,60 @@ export class CategoryService {
     })
   }
 
-  getAllCategories():
-    HttpResourceRef<CategoryResponse[] | undefined> { //this httpResourceRef is only for GET requests and has signal inclusive WITH THE RESPONSE TYPE
-    return httpResource<CategoryResponse[]>(() => `${this.baseUrl}/api/Categories`);
+  getAllCategories(
+    name: Signal<string | undefined> = signal(undefined),
+    sortBy: Signal<string | undefined> = signal(undefined),
+    sortDirection: Signal<string | undefined> = signal(undefined),
+    pageSize: Signal<number | undefined> = signal(5),
+    pageNumber: Signal<number | undefined> = signal(1)
+  ): HttpResourceRef<CategoryResponse[] | undefined> {
+
+    return httpResource<CategoryResponse[]>(() => {
+
+      let params = new HttpParams();
+      //Angular tracks signals only when they are read inside reactive functions.
+      const nameValue = name();
+      const sortByValue = sortBy();
+      const sortDirectionValue = sortDirection();
+      const pageSizeValue = pageSize();
+      const pageNumberValue = pageNumber();
+
+      if (nameValue) {
+        params = params.set('name', nameValue);
+      }
+
+      if (sortByValue) {
+        params = params.set('sortBy', sortByValue);
+      }
+
+      if (sortDirectionValue) {
+        params = params.set('sortDirection', sortDirectionValue);
+      }
+      if (pageNumberValue) {
+        params = params.set('pageNumber', pageNumberValue.toString());
+      }
+      if (pageSizeValue) {
+        params = params.set('pageSize', pageSizeValue.toString());
+      }
+
+      return {
+        url: `${this.baseUrl}/api/Categories`,
+        method: 'GET',
+        params,
+        withCredentials: true
+      };
+    });
   }
 
   getCategoryById(id: InputSignal<string | undefined>):
     HttpResourceRef<CategoryResponse | undefined> { //this httpResourceRef is only for GET requests has signal inclusive WITH THE RESPONSE TYPE
     return httpResource<CategoryResponse>(() => `${this.baseUrl}/api/Categories/${id()}`);
+  }
+
+  getCategoryCount():
+    Observable<number> { 
+      console.log('Request fsetching category count from API...');
+    return this.http.get<number>(`${this.baseUrl}/api/Categories/Count`);
   }
 
   //here we have to return observable because we are not subscribing to the http call in the service, 
