@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams, httpResource, HttpResourceRef } from '@angular/common/http';
 import { inject, Injectable, InputSignal, Signal, signal } from '@angular/core';
-import { CategoryRequest, CategoryResponse, DeleteCategoryResponse, UpdateCategoryRequest } from '../models/category.model';
+import { AddCategoryRequest, CategoryResponse, DeleteCategoryResponse, UpdateCategoryRequest } from '../models/category.model';
 import { environment } from '../../../../environments/environment';
 import { Observable } from 'rxjs';
 
@@ -24,7 +24,7 @@ export class CategoryService {
   addCategoryStatusSignal = signal<'idle' | 'loading' | 'success' | 'error'>('idle');
   updateCategoryStatusSignal = signal<'idle' | 'loading' | 'success' | 'error'>('idle');
 
-  addCategory(category: CategoryRequest) {  //this is observable because we are not subscribing to the http call in the service, we will subscribe to it in the component, and we will perform action based on the response of the observable in the component
+  addCategory(category: AddCategoryRequest) {  //this is observable because we are not subscribing to the http call in the service, we will subscribe to it in the component, and we will perform action based on the response of the observable in the component
     this.addCategoryStatusSignal.set('loading');
     this.http.post<void>(`${this.baseUrl}/api/Categories`, category, {
       withCredentials: true

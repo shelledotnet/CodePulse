@@ -1,0 +1,54 @@
+.custom-navbar {
+    background: linear-gradient(
+        135deg,
+        #0f172a 0%,
+        #1e293b 100%
+    );
+    padding: 0.75rem 0;
+}
+
+.navbar-brand {
+    letter-spacing: 0.5px;
+}
+
+.nav-link {
+    color: rgba(255,255,255,.85) !important;
+    font-weight: 500;
+    margin: 0 6px;
+    transition: all .3s ease;
+}
+
+.nav-link:hover,
+.nav-link.active {
+    color: #ffffff !important;
+}
+
+.dropdown-menu {
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.dropdown-item {
+    padding: 10px 18px;
+}
+
+.dropdown-item:hover {
+    background-color: #f8f9fa;
+}
+
+.user-badge {
+    background: rgba(255,255,255,.15);
+    color: white;
+    padding: 8px 14px;
+    border-radius: 50px;
+    font-size: 0.9rem;
+}
+
+.btn-primary {
+    background: #2563eb;
+    border: none;
+}
+
+.btn-primary:hover {
+    background: #1d4ed8;
+}

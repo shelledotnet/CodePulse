@@ -1,6 +1,6 @@
 import { Component, effect, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { CategoryRequest } from '../models/category.model';
+import { AddCategoryRequest } from '../models/category.model';
 import { CategoryService } from '../services/category-service';
 import { Router } from '@angular/router';
 
@@ -55,7 +55,7 @@ export class AddCategory {
 
   OnSubmit() {
     const addCategoryFormGroupValue = this.addCategoryFormGroup.getRawValue();
-    const addCategoryRequestDto: CategoryRequest = {
+    const addCategoryRequestDto: AddCategoryRequest = {
       name: addCategoryFormGroupValue.name,
       urlHandle: addCategoryFormGroupValue.urlHandle
     }

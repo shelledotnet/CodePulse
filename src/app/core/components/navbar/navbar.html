@@ -1,39 +1,75 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="#">Code Pulse</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
-            aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+<nav class="navbar navbar-expand-lg navbar-dark shadow-sm custom-navbar">
+    <div class="container">
+
+        <!-- Brand -->
+        <a class="navbar-brand fw-bold fs-4" href="#">
+            <i class="bi bi-lightning-charge-fill me-2"></i>
+            Code Pulse
+        </a>
+
+        <!-- Mobile Toggle -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown">
             <span class="navbar-toggler-icon"></span>
         </button>
+
+        <!-- Menu -->
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
+
+            <!-- Left Menu -->
             <ul class="navbar-nav me-auto">
+
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">Home</a>
+                    <a class="nav-link active" href="#">
+                        Home
+                    </a>
                 </li>
+
                 @if(authService.user()?.roles?.includes('writer')){
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
-                        data-bs-toggle="dropdown" aria-expanded="false">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
                         Admin
                     </a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <li><a class="dropdown-item" [routerLink]="['admin','categories']">Categories</a></li>
-                        <li><a class="dropdown-item" [routerLink]="['admin','blogposts']">BlogPosts</a></li>
+
+                    <ul class="dropdown-menu shadow border-0">
+                        <li>
+                            <a class="dropdown-item" [routerLink]="['admin','categories']">
+                                Categories
+                            </a>
+                        </li>
+
+                        <li>
+                            <a class="dropdown-item" [routerLink]="['admin','blogposts']">
+                                BlogPosts
+                            </a>
+                        </li>
                     </ul>
                 </li>
                 }
             </ul>
-            <div class="d-flex gap-4 align-items-center">
+
+            <!-- Right Menu -->
+            <div class="d-flex align-items-center gap-3">
+
                 @if(authService.user()?.email){
-                <span class="navbar-text me-3">
-                    Welcome, {{ authService.user()?.email }}
-                </span>
-                <button type="button" class="btn btn-primary" (click)="onLogout()">Logout</button>
+
+                <div class="user-badge">
+                    <i class="bi bi-person-circle me-2"></i>
+                    {{ authService.user()?.email }}
+                </div>
+
+                <button type="button" class="btn btn-outline-light rounded-pill px-4" (click)="onLogout()">
+                    Logout
+                </button>
+
                 }@else{
-                <a [routerLink]="['/login']" class="btn btn-primary">Login</a>
+
+                <a [routerLink]="['/login']" class="btn btn-primary rounded-pill px-4">
+                    Login
+                </a>
 
                 }
             </div>
+
         </div>
     </div>
 </nav>

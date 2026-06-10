@@ -1,0 +1,49 @@
+.footer {
+    background: linear-gradient(
+        135deg,
+        #0f172a 0%,
+        #1e293b 100%
+    );
+    color: white;
+}
+
+.footer a {
+    color: rgba(255,255,255,.75);
+    text-decoration: none;
+    transition: all .3s ease;
+    display: inline-block;
+    margin-bottom: .5rem;
+}
+
+.footer a:hover {
+    color: #0d6efd;
+    transform: translateX(4px);
+}
+
+.social-icon {
+    width: 35px;
+    height: 35px;
+    font-size: 14px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.1);
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    transition: all .3s ease;
+}
+
+.social-icon:hover {
+    background: #0d6efd;
+    color: white !important;
+    transform: translateY(-3px);
+}
+
+.footer .form-control {
+    border: none;
+    padding: 12px;
+}
+
+.footer .btn {
+    padding-left: 20px;
+    padding-right: 20px;
+}

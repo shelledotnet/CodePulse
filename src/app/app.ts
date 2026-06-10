@@ -3,10 +3,11 @@ import { RouterOutlet } from '@angular/router';
 import { Navbar } from "./core/components/navbar/navbar";
 import { ImageSelector } from "./shared/components/image-selector/image-selector";
 import { AuthService } from './features/auth/services/auth-service';
+import { Footer } from "./core/components/footer/footer";
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, Navbar, ImageSelector],
+  imports: [RouterOutlet, Navbar, ImageSelector, Footer],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
