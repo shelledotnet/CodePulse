@@ -24,7 +24,7 @@ export class AddCategory {
         this.route.navigate(['/admin/categories']);
         //eventually redirect to category list page
       }
-      if (this.categoryService.addCategoryStatusSignal() === 'error') {
+      else if (this.categoryService.addCategoryStatusSignal() === 'error') {
         this.categoryService.addCategoryStatusSignal.set('idle');//reset the signal to idle after handling the error case, so that it can be used again for future add category requests without being stuck in the error state.
         console.error('Add category request fail');
       }
