@@ -14,11 +14,11 @@ export class Login {
   router = inject(Router);
 
   loginFormGroup = new FormGroup({
-    email: new FormControl<string>('', {
+    email: new FormControl<string>('admin@codepulse.com', {
       nonNullable: true,
       validators: [Validators.required, Validators.email]
     }),
-    password: new FormControl<string>('', {
+    password: new FormControl<string>('Admin@123', {
       nonNullable: true,
       validators: [Validators.required]
     })

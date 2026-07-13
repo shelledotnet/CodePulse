@@ -52,11 +52,11 @@ export class CategoryService {
     }).subscribe({
       next: (response) => {
         this.updateCategoryStatusSignal.set('success');
-        // console.info(response);
+        console.info(response);
       },
       error: (error) => {
         this.updateCategoryStatusSignal.set('error');
-        // console.log(error);
+        console.error(error);
       }
     })
   }
@@ -77,7 +77,10 @@ export class CategoryService {
   ): HttpResourceRef<CategoryResponse[] | undefined> {
 
     return httpResource<CategoryResponse[]>(() => {
-      //how to know a reactive function? reactive function is a function that is called when the value of the signal changes, and it is used to update the value of the signal in the component, so that we can use the updated value of the signal in the component to display the categories in the component, and also to know the loading and error state of the request to fetch all categories based on the query parameters
+      //how to know a reactive function? reactive function is a function that is called when the value of the signal changes,
+      //  and it is used to update the value of the signal in the component, so that we can use the updated value
+      //  of the signal in the component to display the categories in the component, 
+      // and also to know the loading and error state of the request to fetch all categories based on the query parameters
       let params = new HttpParams();
       //Angular tracks signals only when they are read inside reactive functions.
       //what is reactive function? reactive function is a function that is called when the value of the signal 
@@ -117,10 +120,29 @@ export class CategoryService {
     });
   }
 
-  getCategoryById(id: InputSignal<string | undefined>):
-    HttpResourceRef<CategoryResponse | undefined> { //this httpResourceRef is only for GET requests has signal inclusive WITH THE RESPONSE TYPE
-    return httpResource<CategoryResponse>(() => `${this.baseUrl}/api/Categories/${id()}`);
+  // getCategoryById(id: InputSignal<string | undefined>):
+  //   HttpResourceRef<CategoryResponse | undefined> { 
+  //   return httpResource<CategoryResponse>(() => `${this.baseUrl}/api/Categories/${id()}`);
+  // }
+
+  getCategoryById(
+    id: InputSignal<string | undefined>
+  ): HttpResourceRef<CategoryResponse | undefined> {//this httpResourceRef is only for GET requests has signal inclusive WITH THE RESPONSE TYPE
+    return httpResource<CategoryResponse>(() => {
+      const categoryId = id();
+
+      if (!categoryId) {
+        return undefined;
+      }
+
+      return `${this.baseUrl}/api/Categories/${categoryId}`;
+    });
   }
+
+
+
+
+
 
   getCategoryCount():
     Observable<number> {

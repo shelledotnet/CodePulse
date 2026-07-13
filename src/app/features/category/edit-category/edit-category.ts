@@ -14,13 +14,17 @@ export class EditCategory {
   constructor() {
     //i will use effect signal to loop through the signal ensure is always inside a constructor
     //effect() is part of Angular Signals.
-    //In this context, effect() is used to create a reactive effect that automatically runs whenever the signals it depends on change.
-    //In this case, the effect is used to check the status of the updateCategoryStatusSignal and perform actions based on its value (i.e., when the update category request is successful or fails).
+    //In this context, effect() is used to create a reactive effect that automatically runs whenever the signals 
+    // it depends on change.
+    //In this case, the effect is used to check the status of the updateCategoryStatusSignal and perform actions based 
+    // on its value (i.e., when the update category request is successful or fails).
 
     effect(() => {
       if (this.categoryService.updateCategoryStatusSignal() === 'success') {
         console.info('success');
-        this.categoryService.updateCategoryStatusSignal.set('idle');//reset the signal to idle after handling the success case, so that it can be used again for future update category requests without being stuck in the success state.
+        this.categoryService.updateCategoryStatusSignal.set('idle');
+        //reset the signal to idle after handling the success case, so that it can be used again for future update 
+        // category requests without being stuck in the success state.
         this.route.navigate(['/admin/categories']);
         //eventually redirect to category list page
       }
@@ -30,7 +34,9 @@ export class EditCategory {
       }
     });
   }
-  id = input<string>(); //this is the input signal that will receive the id parameter from the route, ensure the landing componet can recieve route parametr by adding  provideRouter(routes,withComponentInputBinding()), in app.config.ts
+  id = input<string>(); //this is the input signal that will receive the id parameter from the route, ensure the 
+  //landing componet can recieve route parametr by registering  provideRouter(routes,withComponentInputBinding()), 
+  // in app.config.ts
   private categoryService = inject(CategoryService);
   private route = inject(Router);
   private getCategoryByIdRef = this.categoryService.getCategoryById(this.id);//we are passing the id input signal to the getCategoryById method here with out paranthesis but when calling signal we inclue the parathesis in the service to fetch the category details based on the id, and we are using the returned signal to get the category details and patch the form values with the category details, and also to know the loading and error state of the request to fetch category details based on id
@@ -46,7 +52,9 @@ export class EditCategory {
   // 1) import reactiveformsmodule.
   // 2) formgroup --> formcontrols
   editCategoryFormGroup = new FormGroup({
-    //'' is the default value of the 2 form controls name and urlhandle, nonNullable is set to true to ensure that the form control value is never null, and we have added validators to the form controls to ensure that the name and urlHandle are required and have a maximum length of 30 characters.
+    //'' is the default value of the 2 form controls name and urlhandle, nonNullable is set to true to ensure that
+    //  the form control value is never null, and we have added validators to the form controls to ensure that the
+    //  name and urlHandle are required and have a maximum length of 30 characters.
     name: new FormControl<string>('', {
       nonNullable: true,
       validators: [Validators.required, Validators.maxLength(30)]
@@ -56,8 +64,10 @@ export class EditCategory {
       validators: [Validators.required, Validators.maxLength(30)]
     }),
   })
-
-  //the below getters are for validation and to access the form controls in the template, we are using editCategoryFormGroup.controls to access the form controls and return the specific form control based on the name of the form control, and we are using these getters in the template to show validation errors for each form control when the form control is invalid and touched or dirty
+//3 ensure you always have getters for the form controls in the form group, so that you can access the form controls
+//  in the template and show validation errors for each form control when the form control is invalid and touched or
+//  dirty
+//the below getters are for validation and to access the form controls in the template, we are using editCategoryFormGroup.controls to access the form controls and return the specific form control based on the name of the form control, and we are using these getters in the template to show validation errors for each form control when the form control is invalid and touched or dirty
   get nameFormControl() {
     return this.editCategoryFormGroup.controls.name;
   }
@@ -86,7 +96,12 @@ export class EditCategory {
     const id = this.id();
     if (!this.editCategoryFormGroup.valid || !id) {
       this.editCategoryFormGroup.markAllAsTouched();
-      return;  //return from here and dont submit the form if the form is invalid or id is undefined, and we are marking all form controls as touched to show validation errors for all form controls in the template when the form is submitted with invalid values, and we are also checking if the id is undefined because we need the id to make the update category request, and if the id is undefined it means that there is an issue with fetching the category details based on id or with receiving the id parameter from the route, and in both cases we should not submit the form because we need the id to make the update category request.
+      return;  //return from here and dont submit the form if the form is invalid or id is undefined, and we are
+      // marking all form controls as touched to show validation errors for all form controls in the template when 
+      // the form is submitted with invalid values, and we are also checking if the id is undefined because we need
+      //  the id to make the update category request, and if the id is undefined it means that there is an issue 
+      // with fetching the category details based on id or with receiving the id parameter from the route, and in
+      //  both cases we should not submit the form because we need the id to make the update category request.
     }
 
     const editCategoryFormGroupValue = this.editCategoryFormGroup.getRawValue();

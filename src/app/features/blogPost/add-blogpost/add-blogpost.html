@@ -4,10 +4,28 @@
         <div class="mb-3">
             <label class="form-label">Title</label>
             <input type="text" class="form-control" formControlName="title">
+            @if(titleFormControl.touched && titleFormControl.hasError('required')){
+            <p class="text-danger small">title is required</p>
+            }
+            @if(titleFormControl.touched && titleFormControl.hasError('maxlength')){
+            <p class="text-danger small">title must be less than or equal to 30 characters</p>
+            }
+            @if(titleFormControl.touched && titleFormControl.hasError('minlength')){
+            <p class="text-danger small">title must be greater than or equal to 10 characters</p>
+            }
         </div>
         <div class="mb-3">
             <label class="form-label">Short Description</label>
             <input type="text" class="form-control" formControlName="shortDescription">
+            @if(shortDescriptionFormControl.touched && shortDescriptionFormControl.hasError('required')){
+            <p class="text-danger small">shortDescription is required</p>
+            }
+            @if(shortDescriptionFormControl.touched && shortDescriptionFormControl.hasError('maxlength')){
+            <p class="text-danger small">shortDescription must be less than or equal to 70 characters</p>
+            }
+            @if(shortDescriptionFormControl.touched && shortDescriptionFormControl.hasError('minlength')){
+            <p class="text-danger small">shortDescription must be greater than or equal to 5 characters</p>
+            }
         </div>
         <div class="mb-3">
 
@@ -15,6 +33,15 @@
                 <div class="col-6 p-2">
                     <label class="form-label">Content</label>
                     <textarea class="form-control" formControlName="content" rows="5"></textarea>
+                    @if(contentFormControl.touched && contentFormControl.hasError('required')){
+                    <p class="text-danger small">content is required</p>
+                    }
+                    @if(contentFormControl.touched && contentFormControl.hasError('maxlength')){
+                    <p class="text-danger small">content must be less than or equal to 250 characters</p>
+                    }
+                    @if(contentFormControl.touched && contentFormControl.hasError('minlength')){
+                    <p class="text-danger small">content must be greater than or equal to 20 characters</p>
+                    }
                 </div>
                 <div class="col-6 p-2" style="max-height: 350px; overflow-y: scroll;">
                     <markdown [data]="addBlogpostForm.controls.content.getRawValue()"></markdown>
@@ -24,7 +51,8 @@
         </div>
         <div class="mb-3">
             <label class="form-label">Featured Image URL
-                <button class="btn btn-light" type="button" (click)="imageSelectorService.displayImageSelector()">Select Image</button>
+                <button class="btn btn-light" type="button" (click)="imageSelectorService.displayImageSelector()">Select
+                    Image</button>
 
             </label>
 
@@ -35,14 +63,41 @@
             </div>
             }
             <input type="text" class="form-control" formControlName="featuredImageUrl">
+            @if(featuredImageUrlFormControl.touched && featuredImageUrlFormControl.hasError('required')){
+            <p class="text-danger small">featuredImageUrl is required</p>
+            }
+            @if(featuredImageUrlFormControl.touched && featuredImageUrlFormControl.hasError('maxlength')){
+            <p class="text-danger small">featuredImageUrl must be less than or equal to 250 characters</p>
+            }
+            @if(featuredImageUrlFormControl.touched && featuredImageUrlFormControl.hasError('minlength')){
+            <p class="text-danger small">featuredImageUrl must be greater than or equal to 20 characters</p>
+            }
         </div>
         <div class="mb-3">
             <label class="form-label">URL Handle</label>
             <input type="text" class="form-control" formControlName="urlHandle">
+            @if(urlHandleFormControl.touched && urlHandleFormControl.hasError('required')){
+            <p class="text-danger small">urlHandle is required</p>
+            }
+            @if(urlHandleFormControl.touched && urlHandleFormControl.hasError('maxlength')){
+            <p class="text-danger small">urlHandle must be less than or equal to 250 characters</p>
+            }
+            @if(urlHandleFormControl.touched && urlHandleFormControl.hasError('pattern')){
+            <p class="text-danger small">urlHandle should follow specifield patterns</p>
+            }
         </div>
         <div class="mb-3">
             <label class="form-label">Author</label>
             <input type="text" class="form-control" formControlName="author">
+            @if(authorFormControl.touched && authorFormControl.hasError('required')){
+            <p class="text-danger small">author is required</p>
+            }
+            @if(authorFormControl.touched && authorFormControl.hasError('maxlength')){
+            <p class="text-danger small">author must be less than or equal to 30 characters</p>
+            }
+            @if(authorFormControl.touched && authorFormControl.hasError('minlength')){
+            <p class="text-danger small">author must be greater than or equal to 5 characters</p>
+            }
         </div>
         <div class="mb-3">
             <label class="form-label">PublishedDate</label>
@@ -66,7 +121,8 @@
             </select> -->
         </div>
         <div class="mb-3">
-            <button type="submit" class="btn btn-primary">Add Blog Post</button>
+            <button type="submit" class="btn btn-primary" [disabled]="addBlogpostForm.valid==false">Add Blog
+                Post</button>
         </div>
     </form>
 </div>

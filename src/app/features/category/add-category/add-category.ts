@@ -16,7 +16,13 @@ export class AddCategory {
   //above are private properties only accessible within the AddCategory class. not in the html file.
   constructor() {
     //i will use effect signal to loop through the signal details, ensure effect() is always inside a constructor
-    //why do we always have effect signal inside constructor? because we want to ensure that the effect is created when the component is created, and also because we want to avoid creating multiple effects when the component is re-rendered, because if we put the effect outside the constructor it will be created every time the component is re-rendered, and this will cause performance issues and memory leaks, but when we put the effect inside the constructor it will be created only once when the component is created, and it will be automatically destroyed when the component is destroyed, so this is a good practice to ensure that we dont create multiple effects and we dont have memory leaks in our application. 
+    //why do we always have effect signal inside constructor? because we want to ensure that the effect is created 
+    // when the component is created, and also because we want to avoid creating multiple effects when the component
+    // is re-rendered, because if we put the effect outside the constructor it will be created every time the component
+    // is re-rendered, and this will cause performance issues and memory leaks, but when we put the effect inside 
+    // the constructor it will be created only once when the component is created, and it will be automatically
+    //  destroyed when the component is destroyed, so this is a good practice to ensure that we dont create multiple
+    //  effects and we dont have memory leaks in our application. 
     effect(() => {
       if (this.categoryService.addCategoryStatusSignal() === 'success') {
         console.info('success');

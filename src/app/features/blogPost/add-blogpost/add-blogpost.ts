@@ -44,19 +44,19 @@ export class AddBlogpost {
   addBlogpostForm = new FormGroup({  //this reactive form will be used to capture the input from the user when adding a new blog post. It includes form controls for title, short description, content, featured image URL, URL handle, and author, each with appropriate validators to ensure that the input meets certain criteria (e.g., required fields, minimum and maximum lengths, and specific patterns).
     title: new FormControl<string>('Iranian War', {
       nonNullable: true,
-      validators: [Validators.required, Validators.minLength(10), Validators.maxLength(100)]
+      validators: [Validators.required, Validators.minLength(10), Validators.maxLength(50)]
     }),
     shortDescription: new FormControl<string>('This was started by usa', {
       nonNullable: true,
-      validators: [Validators.required, Validators.minLength(5), Validators.maxLength(250)]
+      validators: [Validators.required, Validators.minLength(5), Validators.maxLength(70)]
     }),
     content: new FormControl<string>('Iranaian President was killed', {
       nonNullable: true,
-      validators: [Validators.required, Validators.minLength(20)]
+      validators: [Validators.required, Validators.minLength(20), Validators.maxLength(250)]
     }),
     featuredImageUrl: new FormControl<string>('https://example.com/featured-image.jpg', {
       nonNullable: true,
-      validators: [Validators.required, Validators.maxLength(250)]
+      validators: [Validators.required, Validators.minLength(20), Validators.maxLength(250)]
     }),
     urlHandle: new FormControl<string>('https', {
       nonNullable: true,
@@ -64,7 +64,7 @@ export class AddBlogpost {
     }),
     author: new FormControl<string>('John Doe', {
       nonNullable: true,
-      validators: [Validators.required]
+      validators: [Validators.required, Validators.minLength(5), Validators.maxLength(30)]
     })
     ,
     PublishedDate: new FormControl<string>(new Date().toISOString().split('T')[0], {
@@ -76,6 +76,38 @@ export class AddBlogpost {
     }),
     categories: new FormControl<string[]>([])
   });
+
+  //the below getters are for validation and to access the form controls in the template, we are using addCategoryFormGroup.
+  //controls to access the form controls and return the specific form control based on the name of the form control,
+  //  and we are using these getters in the template to show validation errors for each form control when the form control is invalid and touched or dirty
+  get titleFormControl() {
+    return this.addBlogpostForm.controls.title;
+  }
+  get shortDescriptionFormControl() {
+    return this.addBlogpostForm.controls.shortDescription;
+  }
+  get contentFormControl() {
+    return this.addBlogpostForm.controls.content;
+  }
+  get featuredImageUrlFormControl() {
+    return this.addBlogpostForm.controls.featuredImageUrl;
+  }
+  get urlHandleFormControl() {
+    return this.addBlogpostForm.controls.urlHandle;
+  }
+  get authorFormControl() {
+    return this.addBlogpostForm.controls.author;
+  }
+  get PublishedDateFormControl() {
+    return this.addBlogpostForm.controls.PublishedDate;
+  }
+  get isVisibleFormControl() {
+    return this.addBlogpostForm.controls.isVisible;
+  }
+  get categoriesFormControl() {
+    return this.addBlogpostForm.controls.categories;
+  }
+
 
   OnSubmit() {
     const formValue = this.addBlogpostForm.getRawValue();
