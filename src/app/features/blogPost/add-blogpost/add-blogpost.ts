@@ -1,12 +1,12 @@
 import { Component, effect, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { BlogPostService } from '../services/blog-post-service';
-import { AddBlogPost } from '../models/blogpost.model';
 import { Router } from '@angular/router';
 import { MarkdownComponent } from 'ngx-markdown';
 import { CategoryService } from '../../category/services/category-service';
 import { ImageSelectorService } from '../../../shared/services/image-selector-service';
 import { ImageSelector } from "../../../shared/components/image-selector/image-selector";
+import { AddBlogPostRequestDto } from '../models/blogpost.model';
 
 @Component({
   selector: 'app-add-blogpost',
@@ -112,7 +112,7 @@ export class AddBlogpost {
   OnSubmit() {
     const formValue = this.addBlogpostForm.getRawValue();
     console.info('Form Value:', formValue);
-    const addBlogPostRequest: AddBlogPost = {
+    const addBlogPostRequest: AddBlogPostRequestDto = {
       title: formValue.title,
       shortDescription: formValue.shortDescription,
       content: formValue.content,
@@ -123,15 +123,16 @@ export class AddBlogpost {
       isVisible: formValue.isVisible,
       categories: formValue.categories ?? []
     };
-    this.blogPostService.createBlogPost(addBlogPostRequest).subscribe({
-      next: (response) => {
-        console.info('Blog post created successfully:', response);
-        this.route.navigate(['/admin/blogposts']);
-      },
-      error: (error) => {
-        console.error('Error creating blog post:', error);
-      }
-    });
+    this.blogPostService.createBlogPost(addBlogPostRequest)
+      .subscribe({
+        next: (response) => {
+          console.info('Blog post created successfully:', response);
+          this.route.navigate(['/admin/blogposts']);
+        },
+        error: (error) => {
+          console.error('Error creating blog post:', error);
+        }
+      });
 
 
   }

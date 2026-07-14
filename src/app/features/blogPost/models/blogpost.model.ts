@@ -1,6 +1,6 @@
 import { CategoryResponse } from "../../category/models/category.model";
 
-export interface AddBlogPost {
+export interface AddBlogPostRequestDto {
     title: string;
     content: string;
     shortDescription: string;
@@ -13,7 +13,7 @@ export interface AddBlogPost {
 
 
 }
-export interface BlogPost {
+export interface BlogPostResponseDto {
     id: string;
     title: string;
     content: string;

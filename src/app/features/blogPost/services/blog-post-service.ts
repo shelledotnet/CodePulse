@@ -1,5 +1,5 @@
 import { inject, Injectable, InputSignal, signal } from '@angular/core';
-import { AddBlogPost, BlogPost, UpdateBlogPostRequest } from '../models/blogpost.model';
+import { AddBlogPostRequestDto, BlogPostResponseDto, UpdateBlogPostRequest } from '../models/blogpost.model';
 import { HttpClient, httpResource, HttpResourceRef } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 import { Observable } from 'rxjs';
@@ -16,33 +16,34 @@ export class BlogPostService {
   private baseUrl = environment.apiBaseUrL;
 
 
-  //this will return an observable of type BlogPost because we are not subscribing to the http call in the service, we will subscribe to it in the component, and we will perform action based on the response of the observable in the component
-  createBlogPost(data: AddBlogPost): Observable<BlogPost> {
-    return this.http.post<BlogPost>(`${this.baseUrl}/api/blogpost`, data, {
+  //this will return an observable of type BlogPost because we are not subscribing to the http call in the service,
+  //we will subscribe to it in the component, and we will perform action based on the response of the observable in the component
+  createBlogPost(data: AddBlogPostRequestDto): Observable<BlogPostResponseDto> {
+    return this.http.post<BlogPostResponseDto>(`${this.baseUrl}/api/blogpost`, data, {
       withCredentials: true
     });
   }
 
-  getAllBlogPosts(): HttpResourceRef<BlogPost[] | undefined> { //this httpResource is only for GET requests and has signal inclusive WITH THE RESPONSE TYPE
-    return httpResource<BlogPost[]>(() => `${this.baseUrl}/api/BlogPost`);
+  getAllBlogPosts(): HttpResourceRef<BlogPostResponseDto[] | undefined> { //this httpResource is only for GET requests and has signal inclusive WITH THE RESPONSE TYPE
+    return httpResource<BlogPostResponseDto[]>(() => `${this.baseUrl}/api/BlogPost`);
   }
 
   getBlogPostById(id: InputSignal<string | undefined>):
-    HttpResourceRef<BlogPost | undefined> { //this httpResource is only for GET requests has signal inclusive WITH THE RESPONSE TYPE
-    return httpResource<BlogPost>(() => `${this.baseUrl}/api/BlogPost/${id()}`);
+    HttpResourceRef<BlogPostResponseDto | undefined> { //this httpResource is only for GET requests has signal inclusive WITH THE RESPONSE TYPE
+    return httpResource<BlogPostResponseDto>(() => `${this.baseUrl}/api/BlogPost/${id()}`);
   }
 
 
   getBlogPostByUrlHandle(urlHandle: InputSignal<string | undefined>):
-    HttpResourceRef<BlogPost | undefined> { //this httpResource is only for GET requests has signal inclusive WITH THE RESPONSE TYPE
-    return httpResource<BlogPost>(() => `${this.baseUrl}/api/BlogPost/${urlHandle()}`);
+    HttpResourceRef<BlogPostResponseDto | undefined> { //this httpResource is only for GET requests has signal inclusive WITH THE RESPONSE TYPE
+    return httpResource<BlogPostResponseDto>(() => `${this.baseUrl}/api/BlogPost/${urlHandle()}`);
   }
 
 
 
   //this will return an observable of type BlogPost because we are not subscribing to the http call in the service, we will subscribe to it in the component, and we will perform action based on the response of the observable in the component
-  updateBlogPost(id: string, editBlogPost: UpdateBlogPostRequest): Observable<BlogPost> {
-    return this.http.put<BlogPost>(`${this.baseUrl}/api/BlogPost/${id}`, editBlogPost, {
+  updateBlogPost(id: string, editBlogPost: UpdateBlogPostRequest): Observable<BlogPostResponseDto> {
+    return this.http.put<BlogPostResponseDto>(`${this.baseUrl}/api/BlogPost/${id}`, editBlogPost, {
       withCredentials: true
     });
   }
@@ -50,8 +51,8 @@ export class BlogPostService {
   //here we have to return observable because we are not subscribing to the http call in the service, 
   // we will subscribe to it in the component, and we will perform action based on the response of 
   // the observable in the component
-  deleteBlogPostById(id: string): Observable<BlogPost> {
-    return this.http.delete<BlogPost>(`${this.baseUrl}/api/BlogPost/${id}`, {
+  deleteBlogPostById(id: string): Observable<BlogPostResponseDto> {
+    return this.http.delete<BlogPostResponseDto>(`${this.baseUrl}/api/BlogPost/${id}`, {
       withCredentials: true
     });
   }
