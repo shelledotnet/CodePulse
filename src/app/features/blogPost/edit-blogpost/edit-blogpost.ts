@@ -21,15 +21,18 @@ export class EditBlogpost {
   private blogPostService = inject(BlogPostService);
   private categoryService = inject(CategoryService);
   private route = inject(Router);
-  private getBlogPostByIdRef = this.blogPostService.getBlogPostById(this.id);//we are passing the id input signal to the getCategoryById method here with out paranthesis but when calling signal we inclue the parathesis in the service to fetch the category details based on the id, and we are using the returned signal to get the category details and patch the form values with the category details, and also to know the loading and error state of the request to fetch category details based on id
+  private isEditMode = true;
+  private categoriesResourceRef = this.categoryService.getAllCategories();
+  private getBlogPostByIdRef = this.blogPostService.getBlogPostById(this.id);//we are passing the id input signal 
+  //to the getCategoryById method here with out paranthesis but when calling signal we inclue the parathesis in the
+  //service to fetch the category details based on the id, and we are using the returned signal to get the category
+  // details and patch the form values with the category details, and also to know the loading and error state of the request to fetch category details based on id
   //above are private properties only accessible within the EditBlogpost class. not in the html file.
   isLoading = this.getBlogPostByIdRef.isLoading;
   isError = this.getBlogPostByIdRef.error;
   blogPostResponse = this.getBlogPostByIdRef.value;
   statusCode = this.getBlogPostByIdRef.statusCode;
-  private categoriesResourceRef = this.categoryService.getAllCategories();
   categoriesResponse = this.categoriesResourceRef.value;
-  isEditMode = true;
 
 
   // 1) import reactiveformsmodule.
@@ -106,15 +109,14 @@ export class EditBlogpost {
   //In this case, the effect is used to patch the editBlogPostForm 
   //  values with the blogPostResponse() details 
   effectRef = effect(() => {
-    if (this.isEditMode) {
+
+    if (this.blogPostResponse() && this.isEditMode) {
       this.editBlogPostForm.get('PublishedDate')?.disable();
-    }
-    if (this.blogPostResponse()) {
       this.editBlogPostForm.patchValue({
         //patchValue enable us to update the values of the form controls in the 
         // editCategoryFormGroup with the values from the categoryResponse signal, and we 
-        // are using optional chaining to ensure that we dont get an error when the categoryResponse signal is undefined or null, because when the component is first loaded the categoryResponse signal will be undefined until the http call to fetch category details based on id is completed and the value of the categoryResponse signal is updated with the fetched category details.
-        //id is not included in the patchValue because we are not allowing the user to edit the id of the category, and also because the id is not part of the form controls in the editCategoryFormGroup, and we are using the id from the input signal to make the update category request in the updateCategory method when the form is submitted.
+        // are using optional chaining to ensure that we dont get an error when the blogPostResponse signal is undefined or null, because when the component is first loaded the blogPostResponse signal will be undefined until the http call to fetch category details based on id is completed and the value of the categoryResponse signal is updated with the fetched category details.
+        //id is not included in the patchValue because we are not allowing the user to edit the id of the blog, and also because the id is not part of the form controls in the editCategoryFormGroup, and we are using the id from the input signal to make the update category request in the updateCategory method when the form is submitted.
         // id: this.categoryResponse()?.id,
         title: this.blogPostResponse()?.title,
         urlHandle: this.blogPostResponse()?.urlHandle,
@@ -122,11 +124,9 @@ export class EditBlogpost {
         shortDescription: this.blogPostResponse()?.shortDescription,
         author: this.blogPostResponse()?.author,
         featuredImageUrl: this.blogPostResponse()?.featuredImageUrl,
-        PublishedDate: new Date(this.blogPostResponse()?.publishedDate!)
-          .toISOString().split('T')[0],
+        PublishedDate: new Date(this.blogPostResponse()?.publishedDate!).toISOString().split('T')[0],
         isVisible: this.blogPostResponse()?.isVisible,
-        categories: this.blogPostResponse()?.categories.map(category => category.id)
-        //we are mapping the categories array in the blogPostResponse to get an array of category
+        categories: this.blogPostResponse()?.categories.map(category => category.id) 
         // ids and patching it to the categories form control, because in the edit blog post form
         //  we will show a list of categories with checkboxes and the user can select multiple 
         // categories for the blog post, so we need to patch an array of category ids to the 
