@@ -7,6 +7,7 @@ import { MarkdownComponent } from 'ngx-markdown';
 import { CategoryService } from '../../category/services/category-service';
 import { ImageSelector } from '../../../shared/components/image-selector/image-selector';
 import { ImageSelectorService } from '../../../shared/services/image-selector-service';
+import { Logging } from '../../../shared/services/logging';
 
 @Component({
   selector: 'app-edit-blogpost',
@@ -18,6 +19,7 @@ export class EditBlogpost {
 
   id = input<string>(); //this is the input signal that will receive the id parameter from the route, ensure the landing componet can recieve route parametr by adding  provideRouter(routes,withComponentInputBinding()), in app.config.ts
   private imageSelectorService = inject(ImageSelectorService);
+  private loggingService = inject(Logging);
   private blogPostService = inject(BlogPostService);
   private categoryService = inject(CategoryService);
   private route = inject(Router);
@@ -126,7 +128,7 @@ export class EditBlogpost {
         featuredImageUrl: this.blogPostResponse()?.featuredImageUrl,
         PublishedDate: new Date(this.blogPostResponse()?.publishedDate!).toISOString().split('T')[0],
         isVisible: this.blogPostResponse()?.isVisible,
-        categories: this.blogPostResponse()?.categories.map(category => category.id) 
+        categories: this.blogPostResponse()?.categories.map(category => category.id)
         // ids and patching it to the categories form control, because in the edit blog post form
         //  we will show a list of categories with checkboxes and the user can select multiple 
         // categories for the blog post, so we need to patch an array of category ids to the 
@@ -170,10 +172,24 @@ export class EditBlogpost {
       //here we subscribe to the returned observables(next: observer and error: observer)
       this.blogPostService.updateBlogPost(id, updateRequestDto).subscribe({
         next: (response) => {
+          this.loggingService.log({
+            method: 'updateBlogPost',
+            status: 'success',
+            message: 'Blog post edited successfully',
+            data: response ?? null,
+            timestamp: new Date().toISOString()
+          });
           console.info('Blog post edited successfully:', response);
           this.route.navigate(['/admin/blogposts']);
         },
         error: (error) => {
+          this.loggingService.log({
+            method: 'updateBlogPost',
+            status: 'error',
+            message: 'Error editing blog post',
+            data: error ?? null,
+            timestamp: new Date().toISOString()
+          });
           console.error('Error editing blog post:', error);
         }
       });
@@ -203,11 +219,25 @@ export class EditBlogpost {
       this.blogPostService.deleteBlogPostById(id)
         .subscribe({
           next: (response) => {
+            this.loggingService.log({
+              method: 'deleteBlogPostById',
+              status: 'success',
+              message: 'Blog post deleted successfully',
+              data: response ?? null,
+              timestamp: new Date().toISOString()
+            });
             console.info(`blog post deleted successfully ${response}`);
             this.route.navigate(['/admin/blogposts']);
             //eventually redirect to category list page
           },
           error: (error) => {
+            this.loggingService.log({
+              method: 'deleteBlogPostById',
+              status: 'error',
+              message: 'Error deleting blog post',
+              data: error ?? null,
+              timestamp: new Date().toISOString()
+            });
             console.error('Error deleting blogpost:', error);
           }
         });
